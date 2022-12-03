@@ -21,4 +21,14 @@ public class MyException extends Exception{
     public MyException(ExceptionEnum ex){
         this(ex.getCode(),ex.getMsg());
     }
+
+
+    public Integer getCode() {
+        return code;
+    }
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
 }

@@ -25,7 +25,13 @@
         from mall_user
         where username = #{username,jdbcType=VARCHAR}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <select id="selectLogin" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from mall_user
+    where username = #{username,jdbcType=VARCHAR} AND password = #{password,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mall_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
