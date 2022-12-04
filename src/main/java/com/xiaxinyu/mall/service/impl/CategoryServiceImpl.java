@@ -5,10 +5,12 @@ import com.xiaxinyu.mall.exception.MyException;
 import com.xiaxinyu.mall.model.dao.CategoryMapper;
 import com.xiaxinyu.mall.model.pojo.Category;
 import com.xiaxinyu.mall.model.request.AddCategoryReq;
+import com.xiaxinyu.mall.model.request.UpdateCategoryReq;
 import com.xiaxinyu.mall.service.CategoryService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 /**
  * @Description:
@@ -36,5 +38,20 @@ public class CategoryServiceImpl implements CategoryService {
         int count = categoryMapper.insertSelective(category);
         if(count != 1)
             throw new MyException(ExceptionEnum.CREATE_FAILED);
+    }
+
+    @Override
+    public void update(UpdateCategoryReq updateCategoryReq){
+        if(! StringUtils.isEmpty(updateCategoryReq.getName())){
+            Category categoryOld = categoryMapper.selectByName(updateCategoryReq.getName());
+            if(categoryOld != null && !categoryOld.getId().equals(updateCategoryReq.getId())){
+                throw new MyException(ExceptionEnum.NAME_EXISTED);
+            }
+        }
+        Category newCategory = new Category();
+        BeanUtils.copyProperties(updateCategoryReq,newCategory);
+        int count = categoryMapper.updateByPrimaryKeySelective(newCategory);
+        if(count != 1)
+            throw new MyException(ExceptionEnum.UPDATE_FAILED);
     }
 }

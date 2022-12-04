@@ -6,6 +6,7 @@ import com.xiaxinyu.mall.exception.ExceptionEnum;
 import com.xiaxinyu.mall.exception.MyException;
 import com.xiaxinyu.mall.model.pojo.User;
 import com.xiaxinyu.mall.model.request.AddCategoryReq;
+import com.xiaxinyu.mall.model.request.UpdateCategoryReq;
 import com.xiaxinyu.mall.service.CategoryService;
 import com.xiaxinyu.mall.service.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -41,16 +42,21 @@ public class CategoryController {
     @ApiOperation("后台添加目录")
     @PostMapping("admin/category/add")
     public ApiRestResponse addCategory(@Valid @RequestBody AddCategoryReq addCategoryReq, HttpSession session){
-
-        User user = (User) session.getAttribute(Constant.MALL_USER);
-        if(user == null) return ApiRestResponse.error(ExceptionEnum.NEED_LOGIN);
-
-        boolean adminRole = userService.checkAdminRole(user);
-        if(adminRole){
             categoryService.add(addCategoryReq);
             return ApiRestResponse.success();
-        }else{
-            return ApiRestResponse.error(ExceptionEnum.NEED_ADMIN);
-        }
+    }
+
+
+    @ApiOperation("后台更新目录")
+    @PostMapping("admin/category/update")
+    public ApiRestResponse updateCategory(@Valid @RequestBody UpdateCategoryReq updateCategoryReq, HttpSession session){
+            categoryService.update(updateCategoryReq);
+            return ApiRestResponse.success();
+    }
+
+    @ApiOperation("后台删除目录")
+    @PostMapping("admin/category/delete")
+    public ApiRestResponse deleteCategory(){
+        return null;
     }
 }
