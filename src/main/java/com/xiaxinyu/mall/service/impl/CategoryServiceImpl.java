@@ -54,4 +54,15 @@ public class CategoryServiceImpl implements CategoryService {
         if(count != 1)
             throw new MyException(ExceptionEnum.UPDATE_FAILED);
     }
+
+    @Override
+    public void delete(Integer id){
+        Category categoryOld = categoryMapper.selectByPrimaryKey(id);
+        if(categoryOld == null)
+            throw new MyException(ExceptionEnum.DELETE_FAILED);
+
+        int count = categoryMapper.deleteByPrimaryKey(id);
+        if(count != 1)
+            throw new MyException(ExceptionEnum.DELETE_FAILED);
+    }
 }

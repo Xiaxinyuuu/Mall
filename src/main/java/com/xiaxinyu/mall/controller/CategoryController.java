@@ -56,7 +56,8 @@ public class CategoryController {
 
     @ApiOperation("后台删除目录")
     @PostMapping("admin/category/delete")
-    public ApiRestResponse deleteCategory(){
-        return null;
+    public ApiRestResponse deleteCategory(@RequestParam Integer id){
+        categoryService.delete(id);
+        return ApiRestResponse.success();
     }
 }

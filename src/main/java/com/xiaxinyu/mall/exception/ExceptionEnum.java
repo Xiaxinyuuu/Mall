@@ -32,6 +32,8 @@ public enum ExceptionEnum {
 
     REQUEST_PARAM_ERROR(10012,"参数错误"),
 
+    DELETE_FAILED(10013,"删除失败"),
+
     SYSTEM_ERROR(20000,"系统异常"),
     ;
     private Integer code;
