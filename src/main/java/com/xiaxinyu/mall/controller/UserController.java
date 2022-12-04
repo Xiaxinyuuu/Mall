@@ -27,7 +27,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/user/register")
+    @PostMapping("/register")
     public ApiRestResponse register(@RequestParam Map<String,String> map) throws MyException {
         String username = map.get("userName");
         String password = map.get("password");
@@ -51,7 +51,7 @@ public class UserController {
     }
 
 
-    @PostMapping("/user/login")
+    @PostMapping("/login")
     public ApiRestResponse login(@RequestParam Map<String,String> map, HttpSession session) throws MyException {
         String username = map.get("userName");
         String password = map.get("password");
@@ -89,7 +89,7 @@ public class UserController {
         return ApiRestResponse.success();
     }
 
-    @PostMapping("/user/adminLogin")
+    @PostMapping("/adminLogin")
     public ApiRestResponse adminLogin(@RequestParam Map<String,String> map, HttpSession session) throws MyException {
         String username = map.get("userName");
         String password = map.get("password");

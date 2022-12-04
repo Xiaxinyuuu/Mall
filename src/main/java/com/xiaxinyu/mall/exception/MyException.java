@@ -9,7 +9,7 @@ package com.xiaxinyu.mall.exception;
  * @version: 1.0.0
  */
 
-public class MyException extends Exception{
+public class MyException extends RuntimeException{
     private final Integer code;
     private final String message;
 

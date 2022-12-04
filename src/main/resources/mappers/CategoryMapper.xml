@@ -19,9 +19,15 @@
     from mall_category
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from mall_category
+      where name = #{name,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from mall_category
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.xiaxinyu.mall.model.pojo.Category">
     insert into mall_category (id, `name`, `type`, 
