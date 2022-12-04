@@ -1,5 +1,7 @@
 package com.xiaxinyu.mall.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xiaxinyu.mall.exception.ExceptionEnum;
 import com.xiaxinyu.mall.exception.MyException;
 import com.xiaxinyu.mall.model.dao.CategoryMapper;
@@ -11,6 +13,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 /**
  * @Description:
@@ -64,5 +68,13 @@ public class CategoryServiceImpl implements CategoryService {
         int count = categoryMapper.deleteByPrimaryKey(id);
         if(count != 1)
             throw new MyException(ExceptionEnum.DELETE_FAILED);
+    }
+
+    @Override
+    public PageInfo listForAdmin(Integer pageNum, Integer pageSize){
+        PageHelper.startPage(pageNum,pageSize,"type,order_num");
+        List<Category> categoryList = categoryMapper.selectList();
+        PageInfo pageInfo = new PageInfo(categoryList);
+        return pageInfo;
     }
 }

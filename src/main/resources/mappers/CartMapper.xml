@@ -19,7 +19,8 @@
     from mall_cart
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="selectList" resultType="com.xiaxinyu.mall.model.pojo.Category"></select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mall_cart
     where id = #{id,jdbcType=INTEGER}
   </delete>

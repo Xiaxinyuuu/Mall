@@ -1,5 +1,6 @@
 package com.xiaxinyu.mall.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.xiaxinyu.mall.common.ApiRestResponse;
 import com.xiaxinyu.mall.common.Constant;
 import com.xiaxinyu.mall.exception.ExceptionEnum;
@@ -59,5 +60,13 @@ public class CategoryController {
     public ApiRestResponse deleteCategory(@RequestParam Integer id){
         categoryService.delete(id);
         return ApiRestResponse.success();
+    }
+
+
+    @ApiOperation("后台目录列表")
+    @PostMapping("admin/category/list")
+    public ApiRestResponse listCategoryForAdmin(@RequestParam Integer pageNum,@RequestParam Integer pageSize){
+        PageInfo pageInfo = categoryService.listForAdmin(pageNum, pageSize);
+        return ApiRestResponse.success(pageInfo);
     }
 }

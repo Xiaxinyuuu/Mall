@@ -1,7 +1,10 @@
 package com.xiaxinyu.mall.model.dao;
 
 import com.xiaxinyu.mall.model.pojo.Cart;
+import com.xiaxinyu.mall.model.pojo.Category;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface CartMapper {
@@ -16,4 +19,5 @@ public interface CartMapper {
     int updateByPrimaryKeySelective(Cart record);
 
     int updateByPrimaryKey(Cart record);
+
 }
