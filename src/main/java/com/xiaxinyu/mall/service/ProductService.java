@@ -16,4 +16,8 @@ public interface ProductService {
     void update(UpdateProductReq updateProductReq);
 
     void delete(Integer id);
+
+    void batchUpdateSellStatus(Integer[] ids, Integer status);
+
+    PageInfo listForAdmin(Integer pageNum, Integer pageSize);
 }

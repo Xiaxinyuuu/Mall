@@ -91,6 +91,18 @@ public class ProductAdminController {
         return ApiRestResponse.success();
     }
 
+    @ApiOperation("后台批量上下架")
+    @PostMapping("admin/product/batchUpdateSellStatus")
+    public ApiRestResponse updateProduct(@RequestParam Integer[] ids,@RequestParam Integer status){
+        productService.batchUpdateSellStatus(ids,status);
+        return ApiRestResponse.success();
+    }
+
+    @ApiOperation("后台商品列表")
+    @PostMapping("admin/product/list")
+    public ApiRestResponse updateProduct(@RequestParam Integer pageNum,@RequestParam Integer pageSize){
+        return ApiRestResponse.success(productService.listForAdmin(pageNum,pageSize));
+    }
 
     private URI getHost(URI uri){
         URI effectiveURI;
