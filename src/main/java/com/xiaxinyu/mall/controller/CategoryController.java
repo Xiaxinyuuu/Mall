@@ -72,10 +72,10 @@ public class CategoryController {
         return ApiRestResponse.success(pageInfo);
     }
 
-    @ApiOperation("后台目录列表")
+    @ApiOperation("前台目录列表")
     @PostMapping("category/list")
     public ApiRestResponse listCategoryForCustoms(){
-        List<CategoryVO> categoryVOS = categoryService.listCategoryForCustomer();
+        List<CategoryVO> categoryVOS = categoryService.listCategoryForCustomer(0);
         return ApiRestResponse.success(categoryVOS);
     }
 }

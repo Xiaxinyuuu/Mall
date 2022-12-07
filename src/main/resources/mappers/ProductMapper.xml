@@ -35,6 +35,23 @@
         from mall_product
         order by update_time desc
     </select>
+    <select id="selectList" parameterType="com.xiaxinyu.mall.model.query.ProductListQuery" resultType="com.xiaxinyu.mall.model.pojo.Product">
+        select
+        <include refid="Base_Column_List"/>
+        from mall_product
+        <where>
+            <if test="query.keyword != null">
+                and name like #{query.keyword}
+            </if>
+            <if test="query.categoryIds != null">
+                and category_id in <foreach collection="query.categoryIds" open="(" close=")" item="id" separator=",">
+                #{id}
+            </foreach>
+            </if>
+            and status = 1
+        </where>
+        order by update_time desc
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
         from mall_product

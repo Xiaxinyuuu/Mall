@@ -2,17 +2,24 @@ package com.xiaxinyu.mall.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.xiaxinyu.mall.common.Constant;
 import com.xiaxinyu.mall.exception.ExceptionEnum;
 import com.xiaxinyu.mall.exception.MyException;
 import com.xiaxinyu.mall.model.dao.ProductMapper;
 import com.xiaxinyu.mall.model.pojo.Product;
+import com.xiaxinyu.mall.model.query.ProductListQuery;
 import com.xiaxinyu.mall.model.request.AddProductReq;
+import com.xiaxinyu.mall.model.request.ProductListReq;
 import com.xiaxinyu.mall.model.request.UpdateProductReq;
+import com.xiaxinyu.mall.model.vo.CategoryVO;
+import com.xiaxinyu.mall.service.CategoryService;
 import com.xiaxinyu.mall.service.ProductService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,7 +35,10 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
-    ProductMapper productMapper;
+    private ProductMapper productMapper;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @Override
     public void add(AddProductReq addProductReq) {
@@ -86,5 +96,47 @@ public class ProductServiceImpl implements ProductService {
     public Product detail(Integer id){
         Product product = productMapper.selectByPrimaryKey(id);
         return product;
+    }
+
+    @Override
+    public PageInfo list(ProductListReq productListReq){
+        //构建Query对象
+        ProductListQuery productListQuery = new ProductListQuery();
+
+        if(! StringUtils.isEmpty(productListReq.getKeyword())){
+            StringBuilder keyword = new StringBuilder().append("%").append(productListReq.getKeyword()).append("%");
+            productListQuery.setKeyword(keyword.toString());
+        }
+
+        //查指定目录下的商品，不仅需要查出该目录下的商品，还需查出所有子目录下的商品
+        if(productListReq.getCategoryId() != null){
+            List<CategoryVO> categoryVOList = categoryService.listCategoryForCustomer(productListReq.getCategoryId());
+            List<Integer> categoryIds = new ArrayList<>();
+            categoryIds.add(productListReq.getCategoryId());
+            getCategoryIds(categoryVOList,categoryIds);
+            productListQuery.setCategoryIds(categoryIds);
+        }
+
+        //排序处理
+        String orderBy = productListReq.getOrderBy();
+        if(Constant.ProductListOrderBy.PRICE_ASC_DESC.contains(orderBy)){
+            PageHelper.startPage(productListReq.getPageNum(),productListReq.getPageSize(),orderBy);
+        }else{
+            PageHelper.startPage(productListReq.getPageNum(),productListReq.getPageSize());
+        }
+
+        List<Product> products = productMapper.selectList(productListQuery);
+        PageInfo pageInfo = new PageInfo(products);
+        return pageInfo;
+    }
+
+    private void getCategoryIds(List<CategoryVO> categoryVOList,List<Integer> categoryIds){
+        for(int i = 0;i < categoryVOList.size();i ++){
+            CategoryVO categoryVO = categoryVOList.get(i);
+            if(categoryVO != null){
+                categoryIds.add(categoryVO.getId());
+                getCategoryIds(categoryVO.getChildCategory(),categoryIds);
+            }
+        }
     }
 }
