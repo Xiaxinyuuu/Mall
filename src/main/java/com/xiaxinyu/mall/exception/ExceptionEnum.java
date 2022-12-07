@@ -34,6 +34,10 @@ public enum ExceptionEnum {
 
     DELETE_FAILED(10013,"删除失败"),
 
+    MKDIR_FAILED(10014,"删除失败"),
+
+    UPLOAD_FAILED(10015,"图片上传失败"),
+
     SYSTEM_ERROR(20000,"系统异常"),
     ;
     private Integer code;
