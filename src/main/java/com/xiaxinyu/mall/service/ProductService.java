@@ -1,6 +1,7 @@
 package com.xiaxinyu.mall.service;
 
 import com.github.pagehelper.PageInfo;
+import com.xiaxinyu.mall.model.pojo.Product;
 import com.xiaxinyu.mall.model.request.AddCategoryReq;
 import com.xiaxinyu.mall.model.request.AddProductReq;
 import com.xiaxinyu.mall.model.request.UpdateCategoryReq;
@@ -20,4 +21,6 @@ public interface ProductService {
     void batchUpdateSellStatus(Integer[] ids, Integer status);
 
     PageInfo listForAdmin(Integer pageNum, Integer pageSize);
+
+    Product detail(Integer id);
 }
