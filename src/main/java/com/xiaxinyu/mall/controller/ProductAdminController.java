@@ -14,7 +14,9 @@ import com.xiaxinyu.mall.common.Constant;
 import com.xiaxinyu.mall.exception.ExceptionEnum;
 import com.xiaxinyu.mall.exception.MyException;
 import com.xiaxinyu.mall.model.request.AddProductReq;
+import com.xiaxinyu.mall.model.request.UpdateProductReq;
 import com.xiaxinyu.mall.service.ProductService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -73,6 +75,22 @@ public class ProductAdminController {
             return ApiRestResponse.error(ExceptionEnum.UPLOAD_FAILED);
         }
     }
+
+
+    @ApiOperation("后台更新商品")
+    @PostMapping("admin/product/update")
+    public ApiRestResponse updateProduct(@Valid @RequestBody UpdateProductReq updateProductReq){
+        productService.update(updateProductReq);
+        return ApiRestResponse.success();
+    }
+
+    @ApiOperation("后台删除商品")
+    @PostMapping("admin/product/delete")
+    public ApiRestResponse updateProduct(@Valid @RequestParam Integer id){
+        productService.delete(id);
+        return ApiRestResponse.success();
+    }
+
 
     private URI getHost(URI uri){
         URI effectiveURI;

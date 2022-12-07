@@ -5,6 +5,7 @@ import com.xiaxinyu.mall.exception.MyException;
 import com.xiaxinyu.mall.model.dao.ProductMapper;
 import com.xiaxinyu.mall.model.pojo.Product;
 import com.xiaxinyu.mall.model.request.AddProductReq;
+import com.xiaxinyu.mall.model.request.UpdateProductReq;
 import com.xiaxinyu.mall.service.ProductService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,30 @@ public class ProductServiceImpl implements ProductService {
         if(count != 1){
             throw new MyException(ExceptionEnum.CREATE_FAILED);
         }
+    }
+
+    @Override
+    public void update(UpdateProductReq updateProductReq){
+        Product productOld = productMapper.selectByName(updateProductReq.getName());
+        //同名且不同id，不能继续修改
+        if(productOld != null && productOld.getId().equals(updateProductReq.getId())){
+            throw new MyException(ExceptionEnum.NAME_EXISTED);
+        }
+        Product product = new Product();
+        BeanUtils.copyProperties(updateProductReq,product);
+        int count = productMapper.updateByPrimaryKeySelective(product);
+        if(count != 1)
+            throw new MyException(ExceptionEnum.UPDATE_FAILED);
+    }
+
+    @Override
+    public void delete(Integer id){
+        Product productOld = productMapper.selectByPrimaryKey(id);
+        if(productOld == null){
+            throw new MyException(ExceptionEnum.DELETE_FAILED);
+        }
+        int count = productMapper.deleteByPrimaryKey(id);
+        if(count != 1)
+            throw new MyException(ExceptionEnum.DELETE_FAILED);
     }
 }
