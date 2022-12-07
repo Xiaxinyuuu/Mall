@@ -73,7 +73,6 @@ public class UserController {
     public ApiRestResponse updateUserInfo(@RequestParam Map<String,String> map,HttpSession session) throws MyException {
         String signature = map.get("signature");
         User curUser = (User)session.getAttribute(Constant.MALL_USER);
-        System.out.println(curUser);
         if(curUser == null)
             return ApiRestResponse.error(ExceptionEnum.NEED_LOGIN);
         User user = new User();

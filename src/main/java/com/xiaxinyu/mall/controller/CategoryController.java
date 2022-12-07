@@ -8,6 +8,7 @@ import com.xiaxinyu.mall.exception.MyException;
 import com.xiaxinyu.mall.model.pojo.User;
 import com.xiaxinyu.mall.model.request.AddCategoryReq;
 import com.xiaxinyu.mall.model.request.UpdateCategoryReq;
+import com.xiaxinyu.mall.model.vo.CategoryVO;
 import com.xiaxinyu.mall.service.CategoryService;
 import com.xiaxinyu.mall.service.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @Description:
@@ -68,5 +70,12 @@ public class CategoryController {
     public ApiRestResponse listCategoryForAdmin(@RequestParam Integer pageNum,@RequestParam Integer pageSize){
         PageInfo pageInfo = categoryService.listForAdmin(pageNum, pageSize);
         return ApiRestResponse.success(pageInfo);
+    }
+
+    @ApiOperation("后台目录列表")
+    @PostMapping("category/list")
+    public ApiRestResponse listCategoryForCustoms(){
+        List<CategoryVO> categoryVOS = categoryService.listCategoryForCustomer();
+        return ApiRestResponse.success(categoryVOS);
     }
 }
