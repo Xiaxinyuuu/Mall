@@ -40,6 +40,14 @@
         where c.user_id = #{userId}
         and p.status = 1
   </select>
+  <update id="selectOrNot"  parameterType="map">
+    update mall_cart
+    set selected = #{selected}
+    where user_id = #{userId}
+    <if test="productId != null">
+      and product_id = #{productId}
+    </if>
+  </update>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mall_cart
     where id = #{id,jdbcType=INTEGER}
