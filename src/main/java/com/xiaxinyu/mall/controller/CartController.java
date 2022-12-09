@@ -27,9 +27,23 @@ public class CartController {
     private CartService cartService;
 
     @PostMapping("/add")
-    @ApiOperation("添加商品到购物车接口")
+    @ApiOperation("添加商品到购物车")
     public ApiRestResponse add(@RequestParam Integer productId,@RequestParam Integer count){
         List<CartVO> cartVOS = cartService.add(UserFilter.user.getId(), productId, count);
+        return ApiRestResponse.success(cartVOS);
+    }
+
+    @PostMapping("/update")
+    @ApiOperation("更新购物车")
+    public ApiRestResponse update(@RequestParam Integer productId,@RequestParam Integer count){
+        List<CartVO> cartVOS = cartService.update(UserFilter.user.getId(), productId, count);
+        return ApiRestResponse.success(cartVOS);
+    }
+
+    @PostMapping("/delete")
+    @ApiOperation("删除购物车")
+    public ApiRestResponse delete(@RequestParam Integer productId){
+        List<CartVO> cartVOS = cartService.delete(UserFilter.user.getId(), productId);
         return ApiRestResponse.success(cartVOS);
     }
 
