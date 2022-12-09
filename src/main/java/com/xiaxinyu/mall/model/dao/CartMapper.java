@@ -2,6 +2,8 @@ package com.xiaxinyu.mall.model.dao;
 
 import com.xiaxinyu.mall.model.pojo.Cart;
 import com.xiaxinyu.mall.model.pojo.Category;
+import com.xiaxinyu.mall.model.vo.CartVO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,4 +22,7 @@ public interface CartMapper {
 
     int updateByPrimaryKey(Cart record);
 
+    Cart selectCartByUserIdAndProductId(@Param("userId") Integer userId,@Param("productId") Integer productId);
+
+    List<CartVO> selectList(Integer userId);
 }

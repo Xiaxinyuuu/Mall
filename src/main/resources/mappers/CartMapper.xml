@@ -19,8 +19,28 @@
     from mall_cart
     where id = #{id,jdbcType=INTEGER}
   </select>
-    <select id="selectList" resultType="com.xiaxinyu.mall.model.pojo.Category"></select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="selectCartByUserIdAndProductId" parameterType="map" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from mall_cart
+      where user_id = #{userId}
+      and product_id = #{productId}
+    </select>
+  <select id="selectList" parameterType="java.lang.Integer" resultType="com.xiaxinyu.mall.model.vo.CartVO">
+        select c.id as id,
+               p.id as productId,
+               c.user_id as userId,
+               c.quantity as quantity,
+               c.selected as selected,
+               p.price as price,
+               p.name as productName,
+               p.image as productImage
+        from mall_cart c
+        left join mall_product p on c.product_id = p.id
+        where c.user_id = #{userId}
+        and p.status = 1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mall_cart
     where id = #{id,jdbcType=INTEGER}
   </delete>

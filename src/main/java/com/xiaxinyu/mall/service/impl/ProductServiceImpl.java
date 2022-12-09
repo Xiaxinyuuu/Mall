@@ -81,48 +81,48 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void batchUpdateSellStatus(Integer[] ids, Integer status) {
-        productMapper.batchUpdateSellStatus(ids,status);
+        productMapper.batchUpdateSellStatus(ids, status);
     }
 
     @Override
-    public PageInfo listForAdmin(Integer pageNum,Integer pageSize){
-        PageHelper.startPage(pageNum,pageSize);
+    public PageInfo listForAdmin(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<Product> products = productMapper.selectListForAdmin();
         PageInfo pageInfo = new PageInfo(products);
         return pageInfo;
     }
 
     @Override
-    public Product detail(Integer id){
+    public Product detail(Integer id) {
         Product product = productMapper.selectByPrimaryKey(id);
         return product;
     }
 
     @Override
-    public PageInfo list(ProductListReq productListReq){
+    public PageInfo list(ProductListReq productListReq) {
         //构建Query对象
         ProductListQuery productListQuery = new ProductListQuery();
 
-        if(! StringUtils.isEmpty(productListReq.getKeyword())){
+        if (!StringUtils.isEmpty(productListReq.getKeyword())) {
             StringBuilder keyword = new StringBuilder().append("%").append(productListReq.getKeyword()).append("%");
             productListQuery.setKeyword(keyword.toString());
         }
 
         //查指定目录下的商品，不仅需要查出该目录下的商品，还需查出所有子目录下的商品
-        if(productListReq.getCategoryId() != null){
+        if (productListReq.getCategoryId() != null) {
             List<CategoryVO> categoryVOList = categoryService.listCategoryForCustomer(productListReq.getCategoryId());
             List<Integer> categoryIds = new ArrayList<>();
             categoryIds.add(productListReq.getCategoryId());
-            getCategoryIds(categoryVOList,categoryIds);
+            getCategoryIds(categoryVOList, categoryIds);
             productListQuery.setCategoryIds(categoryIds);
         }
 
         //排序处理
         String orderBy = productListReq.getOrderBy();
-        if(Constant.ProductListOrderBy.PRICE_ASC_DESC.contains(orderBy)){
-            PageHelper.startPage(productListReq.getPageNum(),productListReq.getPageSize(),orderBy);
-        }else{
-            PageHelper.startPage(productListReq.getPageNum(),productListReq.getPageSize());
+        if (Constant.ProductListOrderBy.PRICE_ASC_DESC.contains(orderBy)) {
+            PageHelper.startPage(productListReq.getPageNum(), productListReq.getPageSize(), orderBy);
+        } else {
+            PageHelper.startPage(productListReq.getPageNum(), productListReq.getPageSize());
         }
 
         List<Product> products = productMapper.selectList(productListQuery);
@@ -130,12 +130,12 @@ public class ProductServiceImpl implements ProductService {
         return pageInfo;
     }
 
-    private void getCategoryIds(List<CategoryVO> categoryVOList,List<Integer> categoryIds){
-        for(int i = 0;i < categoryVOList.size();i ++){
+    private void getCategoryIds(List<CategoryVO> categoryVOList, List<Integer> categoryIds) {
+        for (int i = 0; i < categoryVOList.size(); i++) {
             CategoryVO categoryVO = categoryVOList.get(i);
-            if(categoryVO != null){
+            if (categoryVO != null) {
                 categoryIds.add(categoryVO.getId());
-                getCategoryIds(categoryVO.getChildCategory(),categoryIds);
+                getCategoryIds(categoryVO.getChildCategory(), categoryIds);
             }
         }
     }
